@@ -8,6 +8,9 @@
 \usepackage[utf8]{inputenc}
 
 \newcommand{\eps}{\varepsilon}
+\newcommand{\Rc}{\mathcal{R}}
+
+\newtheorem{definition}{Определение}
 
 \title{Длинные кратчайшие пути в ненаправленных графах}
 
@@ -16,13 +19,22 @@
     \section{Введение}
     \section{Графы общего вида}
     \subsection{Размерность Вапника-Червоненкиса и $\eps$-сети}
-    \subsection{Верхняя оценка}
-    \subsection{Нижняя оценка}
+
+    Пусть $X$ --- конечное множество, $\Rc \subseteq 2^X$ --- система подмножеств $X$.
+    Следующие определения были даны в работе~\cite{VC71} для доказательства равномерного варианта закона больших чисел.
+
+    \begin{definition}
+        Подмножество $U \subseteq X$ \emph{разбивается} $\Rc$, если для любого $V \subseteq U$ найдется $W \in \Rc$ такое,
+        что $W \cap U = V$.
+    \end{definition}
+
+    \subsection{Верхняя оценка на размер $\eps$-сетей}
+    \subsection{Нижняя оценка на размер $\eps$-сетей}
     \cite{A10}
     \section{Графы ограниченной древесной ширины}
     \subsection{Древесная ширина}
     \subsection{Случай деревьев}
-    \subsection{Верхняя оценка}
+    \subsection{Верхняя оценка на размер $\eps$-сетей}
     \section{Приложения}
     \subsection{Оракул больших расстояний}
     \subsection{Приближение метрик нормами}
