@@ -123,9 +123,31 @@
     \label{section_eps_covers}
     \subsection{Графы общего вида}
     \label{subsection_general_graphs}
+    В этом разделе мы докажем две теоремы.
+    Утверждение первой теоремы состоит в наличии $\eps$-покрытий маленького размера.
+    \begin{theorem}
+        \label{upper_bound}
+        В любом взвешенном ненаправленном графе $G$ есть $\eps$-покрытие размера $O(\log(1 / \eps) / \eps)$ для
+        любого $\eps > 0$. Более того, случайное множество вершин размера $O(\log(1 / \eps) / \eps)$ с высокой вероятностью
+        является $\eps$-покрытием.
+    \end{theorem}
+    Возникает вопрос: можно ли улучшить оценку $O(\log(1 / \eps) / \eps)$ до $O(1 / \eps)$? Утверждение второй теоремы
+    состоит в том, что это сделать нельзя.
+    \begin{theorem}
+        \label{lower_bound}
+        Для любого положительного $C > 0$ существуют ненаправленный взвешенный граф $G$ и положительное $\eps > 0$
+        такие, что любое $\eps$-покрытие в $G$ имеет размер по крайней мере $C / \eps$.
+    \end{theorem}
+    Теорема~\ref{upper_bound} доказывается с помощью понятия размерности Вапника-Червоненкиса. В
+    разделе~\ref{subsubsection_vapnik_chervonenkis} мы напомним нужные нам для этого определения и утверждения.
+    В разделе~\ref{subsubsection_upper_bound} мы докажем теорему~\ref{upper_bound}.
+    В разделе~\ref{subsubsection_lower_bound} мы докажем теорему~\ref{lower_bound} с помощью теоремы Хейлса-Джуетта.
     \subsubsection{Размерность Вапника-Червоненкиса и $\eps$-сети}
+    \label{subsubsection_vapnik_chervonenkis}
     \subsubsection{Верхняя оценка}
+    \label{subsubsection_upper_bound}
     \subsubsection{Нижняя оценка}
+    \label{subsubsection_lower_bound}
     \subsection{Графы ограниченной древесной ширины}
     \label{subsection_bounded_treewidth}
     \subsection{Приложения}
