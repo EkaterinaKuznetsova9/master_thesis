@@ -363,6 +363,246 @@
     \label{subsubsection_metric_embeddings}
     \section{Системы пересадок в булевом кубе}
     \label{section_hub_labels}
+    В этом разделе мы покажем, что минимальный размер системы пересадок для булева куба $\zo^n$ равен $2.5^{(1+o(1))n}$.
+    Мы будем отождествлять $\zo^n$ и подмножества $[n] = \set{1, 2, \ldots, n}$. Для вершин $i, j \in \zo^n$ обозначим $\Pc(i, j)$ множество вершин, которые лежат
+    на кратчайших путях из $i$ в $j$. Обозначим $d(i, j)$ расстояние между вершинами $i$ и $j$.
+
+    Обозначим минимальный размер
+    системы пересадок $\mathbf{OPT}$.
+    Составим целочисленную программу, решение которой равно $\mathbf{OPT}$.
+    \begin{equation}
+        \label{ilp}
+        \begin{cases}
+            x_{v,S} \in \zo & \forall \; v \in \zo^n, S \subseteq \zo^n, \\ 
+            \sum_{\begin{smallmatrix}i, j \in S \\ v \in \Pc(i, j)\end{smallmatrix}} x_{v,S} \geq 1 & \forall \; i, j \in \zo^n, \\
+            \sum_{v,S} |S| \cdot x_{v,S} \to \min.
+        \end{cases}
+    \end{equation}
+    Рассмотрим следующую линейную релаксацию~(\ref{ilp}). Обозначим ее оптимальное решение $\mathbf{LP}$.
+    \begin{equation}
+        \label{lp}
+        \begin{cases}
+            x_{v,S} \geq 0 & \forall \; v \in \zo^n, S \subseteq \zo^n, \\ 
+            \sum_{\begin{smallmatrix}i, j \in S \\ v \in \Pc(i, j)\end{smallmatrix}} x_{v,S} \geq 1 & \forall \; i, j \in \zo^n, \\
+            \sum_{v,S} \abs{S} \cdot x_{v,S} \to \min.
+        \end{cases}
+    \end{equation}
+    Очевидно, что $\mathbf{OPT} \geq \mathbf{LP}$. Как известно, $\mathbf{OPT} \leq O(n) \cdot \mathbf{LP}$
+    (см., например,~\cite{V04}).
+
+    Рассмотрим теперь программу, которая является двойственной к~(\ref{lp}).
+    Очевидно, что ее оптимальное решение тоже равно $\mathbf{LP}$.
+    \begin{equation}
+        \label{dual_lp}
+        \begin{cases}
+            y_{i,j} \geq 0 & \forall \; i, j \in \zo^n, \\ 
+            \sum_{\begin{smallmatrix}i, j \in S \\ v \in \Pc(i, j)\end{smallmatrix}} y_{i,j} \leq \abs{S} & \forall \; v \in \zo^n, S \subseteq \zo^n,  \\
+            \sum_{i,j} y_{i,j} \to \max.
+        \end{cases}
+    \end{equation}
+    Пояснение: здесь и далее в этом разделе индексы $i, j$ пробегают \emph{неупорядоченные} пары вершин. То есть,
+    всего в двойственной программе $2^n \cdot (2^n + 1) / 2$ переменных.
+    Теперь усилим~(\ref{dual_lp}): а именно, потребуем, чтобы значения переменных $y_{i,j}$ зависели только от расстояния между $i$ и $j$ (назовем такие
+    решения <<регулярными>>).
+    Таким образом, у нас теперь будут переменные $\tilde{y}_0, \tilde{y}_1, \ldots, \tilde{y}_n$.
+    Обозначим $N_d$ количество пар вершин, расстояние между которыми равно $d$. Тогда программа записывается так:
+    \begin{equation}
+        \label{regular_dual_lp}
+        \begin{cases}
+            \tilde{y}_d \geq 0 & \forall \; 0 \leq d \leq n, \\
+            \sum_{\begin{smallmatrix}i, j \in S \\ 0^n \in \Pc(i, j)\end{smallmatrix}} \tilde{y}_{d(i, j)} \leq \abs{S} & \forall \; S \subseteq \zo^n, \\
+            \sum_{d} N_d \cdot \tilde{y}_d \to \max.
+        \end{cases}
+    \end{equation}
+    Мы оставили только ограничения с $v = 0^n$, потому что другие ограничения не дают ничего нового, так как нас теперь интересуют только длины путей.
+    Обозначим оптимальное решение этой программы $\mathbf{RegularLP}$.
+    Очевидно, что $\mathbf{RegularLP} \leq \mathbf{LP}$.
+    Однако, верно и обратное неравенство.
+    \begin{theorem}
+        $$
+            \mathbf{LP} \leq \mathbf{RegularLP}
+        $$
+    \end{theorem}
+    \begin{proof}
+        Пусть $y_{i,j}$ --- решение~(\ref{dual_lp}). Мы хотим изготовить решение~(\ref{regular_dual_lp}) с не меньшим значением целевой функции.
+        Положим
+        $$
+            \tilde{y}_d := \Exp{d(i, j) = d}{y_{i,j}}.
+        $$
+        Очевидно, что
+        $$
+            \sum_{i,j}y_{i,j} = \sum_d N_d \tilde{y}_d,
+        $$
+        таким образом, остается доказать, что $\tilde{y}$ удовлетворяет
+        всем ограничениям~(\ref{regular_dual_lp}).
+        Возьмем какое-то $S \subseteq \zo^n$. Мы хотим проверить, что
+        \begin{equation}
+            \label{regular_constraint}
+            \sum_{\begin{smallmatrix}i, j \in S \\ 0^n \in \Pc(i, j)\end{smallmatrix}}
+            \tilde{y}_{d(i, j)} \leq \abs{S}.
+        \end{equation}
+        Так как $y$~--- решение~(\ref{dual_lp}), то 
+        $$
+            \sum_{\begin{smallmatrix}i, j \in S \\ 0^n \in \Pc(i, j)\end{smallmatrix}}
+            y_{i, j} \leq \abs{S}.
+        $$
+        Рассмотрим отображение $A \colon \zo^n \to \zo^n$, которое является композицией отображения вида $x \mapsto x \oplus z$, где $z \in \zo^n$~--- случайный вектор,
+        и случайной перестановки координат.
+
+        Видно, во-первых, что $A$~--- биекция, во-вторых, $A$ сохраняет
+        все расстояния,
+        а, в-третьих, если для расстояние между какими-то вершинами $i, j \in \zo^n$
+        равно $d$, то пара $(A(i), A(j))$ распределена равномерно среди всех пар
+        вершин на расстоянии $d$.
+
+        Рассмотрим следующую случайную величину:
+        $$
+            X = \sum_{\begin{smallmatrix}
+                i, j \in A(S) \\
+                A(0^n) \in \Pc(i, j)
+            \end{smallmatrix}} y_{i,j}.
+        $$
+        С одной стороны, так как $A$~--- биекция, а $y$~--- решение~(\ref{dual_lp}),
+        то $\Exp{A}{X} \leq \abs{S}$.
+        С другой стороны,
+        $$
+            \Exp{A}{X} = \Exp{A}{
+            \sum_{\begin{smallmatrix}
+                i, j \in A(S) \\
+                A(0^n) \in \Pc(i, j)
+            \end{smallmatrix}} y_{i,j}
+            } =  \Exp{A}{
+            \sum_{\begin{smallmatrix}
+                i, j \in S \\
+                0^n \in \Pc(i, j)
+            \end{smallmatrix}} y_{A(i),A(j)}
+            } = \sum_{\begin{smallmatrix}i, j \in S \\
+                0^n \in \Pc(i, j)\end{smallmatrix}} \Exp{A}{y_{A(i),A(j)}} = 
+                \sum_{\begin{smallmatrix}i,j \in S \\ 0^n \in \Pc(i, j)
+                    \end{smallmatrix}} \tilde{y}_{d(i,j)}.
+        $$
+        В последнем переходе мы пользуемся тем, что пара $(A(i), A(j))$
+        распределена равномерно среди всех пар на расстоянии $d(i, j)$.
+        Таким образом, (\ref{regular_constraint}) доказано.
+    \end{proof}
+
+    Таким образом, получаем, что
+    $$
+        \mathbf{RegularLP} \leq \mathbf{OPT} \leq O(n) \cdot \mathbf{RegularLP}.
+    $$
+
+    Мы докажем, что $\mathbf{RegularLP} = 2.5^{(1+o(1))n}$.
+
+    Обозначим $\Oc$ политоп задачи~(\ref{regular_dual_lp}).
+    Обозначим 
+    $$
+        \tilde{y}_d^* := \max_{\tilde{y} \in \Oc} \tilde{y}_d.
+    $$
+    Поясним: для каждого $d$ мы выбрали $\tilde{y}_d^*$~--- наибольшее из всех допустимых значений $\tilde{y}_d$.  Очевидно, что
+    $$
+        \max_d (N_d \cdot \tilde{y}_d^*) \leq \mathbf{RegularLP} \leq O(n) \cdot \max_d (N_d \cdot \tilde{y}_d^*).
+    $$
+    Поэтому остается лишь доказать, что $\max_d (N_d \cdot \tilde{y}_d^*) = 2.5^{(1 + o(1)) n}$.
+    Очевидно верна следующая формула для $N_d$:
+    $$
+        N_d = \begin{cases}
+            2^n & d = 0 \\
+            2^{n-1} \cdot \binom{n}{d} & d > 0.
+        \end{cases}
+    $$
+
+    Нам потребуется лемма, которая может иметь и самостоятельный интерес:
+
+    \begin{lemma}
+        \label{lm:regular}
+        В регулярном графе плотность любого подграфа не превосходит плотности всего графа.
+        В двудольном графе, в котором в каждой доле вершины имеют одинаковую степень,
+        плотность любого подграфа не превосходит плотности всего графа.
+    \end{lemma}
+    \begin{proof}
+        Оценив степень каждой вершины подграфа степенью в исходном графе, получим верхнюю оценку на число рёбер в подграфе, а из этого~---
+        что плотность подграфа не превосходит плотности всего графа.
+        
+        Докажем теперь утверждение про двудольные графы.
+        Действительно, пусть в одной доле $p$ вершин, а в другой~--- $q$ вершин. Пусть в доле с $p$ вершинами у всех вершин степень $d$.
+        Рассмотрим подграф такой, что в нем $u$ вершин из первой доли и $v$ вершин из второй.
+        Если в обеих долях подграфа есть вершины не максимальной степени (меньше $d$ и $pd / q$, соответственно),
+        то будем добавлять ребра между такими вершинами, пока такие пары остаются.
+        Не умаляя общности, считаем, что все вершины в первой доле подграфа имеют степень $d$.
+        Так как все степени подграфа во второй доле не превосходят $pd / q$, то имеем $ud \leq vpd / q$, то есть $uq \leq vp$.
+        Отсюда получаем, что $ud / (u + v) \leq pd / (p + q)$, но это значит, что подграф не более плотный, чем целый граф.
+    \end{proof}
+
+
+    Теперь явно вычислим $\tilde{y}_d^*$.
+   
+    \begin{lemma}
+        $$
+            \tilde{y}_d^* = \begin{cases}
+                1 & d = 0 \\
+                2 / \binom{n - k}{k} & d = 2k, k > 0 \\
+                \left(\binom{n}{k} + \binom{n}{k + 1}\right) / \left(\binom{n}{k} \cdot \binom{n - k}{k + 1}\right) & d = 2k + 1.
+            \end{cases}
+        $$
+    \end{lemma}
+    \begin{proof}
+        Если отождествить $\zo^n$ с подмножествами $[n]$, то можно заметить, что условие $0^n \in \Pc(i, j)$ эквивалентно условию непересекаемости соответствующих множеств.
+
+        Сперва докажем нижние оценки.
+        Для этого рассмотрим граф, вершинами которого будут подмножества $[n]$, а ребра будут соединять подмножества,
+        которые не пересекаются, и сумма размеров которых составляет $d$.
+        Для доказательства нижних оценок достаточно показать, что подграфы,
+        индуцированные $S := \setst{A \subseteq [n]}{\abs{A} = k}$ для $d = 2k$ и $S := \setst{A \subseteq [n]}{k \leq \abs{A} \leq k + 1}$
+        для $d = 2k + 1$, являются подграфами наибольшей плотности в нашем графе.
+
+        Для этого повнимательнее посмотрим на структуру графа. Его компоненты связности --- это множества
+        $V_l := \setst{A \subseteq [n]}{\abs{A} = l} \cup \setst{A \subseteq [n]}{\abs{A} = d - l}$.
+        По лемме~\ref{lm:regular} наиболее плотные подграфы $V_l$~--- это сами $V_l$. А из леммы~\ref{lm:middle} следует, что
+        среди всех $V_l$ наибольшей плотностью обладает компонента $V_{\lfloor d / 2\rfloor}$.
+
+        Соответствующие верхние оценки очевидны. Действительно, для этого достаточно посмотреть на ограничения, задаваемые компонентами $V_{\lfloor d / 2\rfloor}$.
+
+    \end{proof}
+
+    Итак, нам остается понять, каков максимум выражения
+    $$
+        N_d \cdot \tilde{y}_d^* = 2^n \cdot \begin{cases}
+            \binom{n}{2k} / \binom{n - k}{k} & d = 2k \\
+            \binom{n}{2k + 1} \cdot \left(\binom{n}{k} + \binom{n}{k + 1}\right) / \left(2 \cdot \binom{n}{k} \cdot \binom{n - k}{k + 1}\right) & d = 2k + 1.
+        \end{cases}
+    $$
+    Несложно проверить, что в обоих случаях максимум достигается на $k = (1 + o(1)) n / 5$. Воспользовавшись формулой $\binom{n}{\alpha n}=2^{n(H(\alpha)+o(1))}$, где $H(\alpha) = -\alpha\log_2(\alpha) -(1-\alpha)\log_2(1-\alpha)$, получаем, что $\max_d N_d \cdot \tilde{y}_d^* = 2.5^{(1+o(1))n}$.
+
+
+    \begin{lemma}
+        \label{lm:middle}
+        Максимум выражения
+        $$
+            \binom{n}{l}\cdot\binom{n-l}{d-l} / \left(\binom{n}{l} + \binom{n}{d-l}\right)
+        $$
+         при фиксированных $n$ и $d$ достигается при $l = \lfloor d/2 \rfloor$.
+    \end{lemma}
+    \begin{proof}
+        Обозначим $h = d/2 - l$ и распишем биномиальные коеффициенты. Получим
+        $$
+            \frac{1}{(n-d)!}\cdot
+            \frac{1}{\frac{(d/2+h)!}{(n-(d/2-h))!} + \frac{(d/2-h)!}{(n-(d/2+h))!}}.
+        $$
+        Мы хотим минимизировать знаменатель второй дроби. Обозначим его слагаемые $t$ и $s$ соответственно.
+        При увеличении $h$ на 1 первое слагаемое в нём увеличивается в $\alpha = (d/2+h)(n-(d/2-h))$ раз,
+        а второе~--- уменьшается в $\beta = (d/2-h)(n-(d/2+h))$ раз. Ясно, что $\alpha \ge \beta$.
+
+        Докажем, что если $t\ge s\ge 0$, и $\alpha > \beta \ge 1$ то $\alpha t + \frac1\beta s\ge t+s$.
+        Действительно, хотим показать, что $(\alpha - 1)t\ge(1-\frac1\beta)s$. Достаточно, чтобы выполнялось $(\alpha - 1)\ge(1-\frac1\beta)$,
+        а это верно, поскольку $2 \le \alpha + \frac1\alpha \le \alpha + \frac1\beta$.
+
+        Мы показали, что при увеличении $h$ на 1 знаменатель увеличивается.
+        При минимальном $h$ имеем либо $t = s = \frac{p!}{(n-p)!}$, если $d = 2k$,
+        либо $t = \frac{(\lfloor d/2 \rfloor + 1)!}{(n - \lfloor d/2 \rfloor)!}$,
+        $s = \frac{\lfloor d/2 \rfloor!}{(n-(\lfloor d/2 \rfloor + 1))!}$ (и $t > s$),
+        если $d = 2k + 1$.
+        Следовательно, минимум знаменателя достигается при минимальном $h$, т.е. при $l = \lfloor d/2 \rfloor$.
+    \end{proof}
     \section{Заключение}
     \bibliographystyle{alpha}
     \bibliography{../bibtex/ir}
