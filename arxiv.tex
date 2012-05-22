@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+
+\newcommand{\dunw}{d_{\mathrm{unw}}}
+\newcommand{\eps}{\varepsilon}
+
+\newtheorem{problem}{Problem}
+
+\begin{document}
+    \section{Introduction}
+
+    Let $G = (V, E, w)$ be an undirected weighted graph (with non-negative weights). One can consider two natural metrics
+    associated with $G$: let $d(v_1, v_2)$ be the distance between $v_1 \in V$ and $v_2 \in V$ with respect to $w$,
+    and $\dunw(v_1, v_2)$~--- the distance between $v_1$ and $v_w$ with respect to unit weights.
+
+    Let us pose the following problem.
+    \begin{problem}
+        Given an undirected weighted graph $G = (V, E, w)$ and $0 < \eps < 1$ let $U \subseteq V$ be \emph{an $\eps$-cover}
+        of $G$ if for every $v_1, v_2 \in V$ such that $\dunw(v_1, v_2) \geq \eps n$ there exists $u \in U$
+        such that $d(v_1, v_2) = d(v_1, u) + d(u, v_2)$.
+
+        What is the smallest $\eps$-cover for a given graph $G$?
+    \end{problem}
+
+    In this paper we partially solve it and give two applications that use the existence of small $\eps$-covers.
+
+    In Section~\ref{section_general_graphs} we prove two bounds. In Section~\ref{subsection_upper_bound}
+    we prove that for every graph $G$ and $0 < \eps < 1$ there exists an $\eps$-cover of size $O(\log(1 / \eps) / \eps)$.
+    It is an immediate consequence of the $\eps$-net theorem for set systems with bounded VC-dimension~\cite{HW86}
+    and the fact that a system of shortest paths (provided that they are unique) has VC-dimension
+    that is at most two~\cite{ADFGW11}.
+    In Section~\ref{subsection_lower_bound} we prove that one can not improve the abovementioned bound
+    to $O(1 / \eps)$ by a simple reduction to a deep theorem in additive combinatorics: density Hales--Jewett
+    theorem~\cite{P09}. This technique is similar to that of Alon~\cite{A10}.
+
+    \section{General graphs}
+    \label{section_general_graphs}
+    \subsection{Upper bound}
+    \subsection{Lower bound}
+    \section{Bounded treewidth graphs}
+    \section{Applications}
+    \subsection{Distance oracles}
+    \subsection{Metric embeddings}
+    \bibliographystyle{alpha}
+    \bibliography{../bibtex/ir}
+\end{document}
