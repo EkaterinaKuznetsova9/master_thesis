@@ -10,4 +10,4 @@ arxiv.pdf: arxiv.tex ../bibtex/ir.bib
 	pdflatex arxiv
 	pdflatex arxiv
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.out *.toc *.pdf 
+	rm -f *.aux *.bbl *.blg *.log *.out *.toc *.pdf *.ps *.dvi 
