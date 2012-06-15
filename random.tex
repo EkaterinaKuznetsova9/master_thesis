@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{ccfonts}
+\usepackage[T1]{fontenc}
+
+\renewcommand{\bfdefault}{sbc}
+
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{lemma}{Лемма}
+
+\begin{document}
+    Пусть $G = (V, E)$~--- ненаправленный невзвешенный граф.
+    Обозначим $\Pc(i, j)$ множество вершин, которые лежат на кратчайших путях из $i$ в $j$.
+    Обозначим $B(v, r)$ шар с центром $v$ и радиусом $r$. Обозначим $\mu(r) := \max_v |B(v, r)|$ размер наибольшего шара радиуса $r$.
+    Обозначим $\Delta$ диаметр графа $G$. Наконец, обозначим $L(G)$ наименьший размер меток в $G$.
+
+    \begin{theorem}
+        $$
+            \Omega\left(\frac{n^2}{\mu(\left\lceil \frac{\Delta - 1}{2} \right\rceil)}\right) \leq L(G)
+            \leq O\left(n \cdot \mu\left(\left\lceil\frac{\Delta}{2}\right\rceil\right)\right).
+        $$
+    \end{theorem}
+    \begin{proof}
+        Верхняя оценка очевидна: в качестве метки вершины $v$ возьмем $B(v, \lceil \Delta / 2 \rceil)$.
+
+        Докажем теперь нижнюю оценку. Обозначим $d := \lceil (\Delta - 1) / 2 \rceil$.
+        По теореме слабой двойственности для ЛП $L(G) \geq \mathbf{LP}$, где $\mathbf{LP}$~--- оптимальное решение следующей линейной программы:
+        \begin{equation}
+            \label{dual_lp}
+            \begin{cases}
+                y_{i,j} \geq 0 & \forall \; i, j \in V, \\ 
+                \sum_{\begin{smallmatrix}i, j \in S \\ v \in \Pc(i, j)\end{smallmatrix}} y_{i,j} \leq \abs{S} & \forall \; v \in V, S \subseteq V,  \\
+                \sum_{i,j} y_{i,j} \to \max.
+            \end{cases}
+        \end{equation}
+        Покажем, что можно взять $y_{i,j}$ равными $\Omega(1 / \mu(d))$ для всех $i$ и $j$. Отсюда будет непосредственно
+        следовать нижняя оценка.
+        Возьмем какие-то $v \in V, S \subseteq V$.
+        Построим граф $G'$: его вершины --- элементы $S$, $i, j \in S$ соединены ребром, если $v \in \Pc(i, j)$.
+        Тогда нам достаточно доказать, что плотность $G'$ не превосходит $O(\mu(d))$.
+        Для этого положим $S_1 := S \cap B(v, d), S_2 := S - S_1$.
+        Ключевое наблюдение состоит в том, что в $G'$ нет ребер между вершинами из $S_2$.
+        Действительно, расстояние между любыми вершинами не превосходит $\Delta$, а расстояния между $v$ и элементами $S_2$ не меньше 
+        $\lceil (\Delta - 1) / 2 \rceil + 1$.
+        Таким образом, количество ребер в $G'$ не превосходит $|S| \cdot |S_1| \leq |S| \cdot \mu(d)$.
+
+    \end{proof}
+\end{document}
