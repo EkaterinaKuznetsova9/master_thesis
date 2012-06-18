@@ -1,47 +1,87 @@
 \documentclass{article}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{fullpage}
+\usepackage{hyperref}
 
 \newcommand{\dunw}{d_{\mathrm{unw}}}
 \newcommand{\eps}{\varepsilon}
 
-\newtheorem{problem}{Problem}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+
+\title{On $\eps$-Nets, Distance Oracles, and Metric Embeddings}
+\author{Ilya Razenshteyn}
+\date{}
 
 \begin{document}
+    \maketitle
     \section{Introduction}
 
-    Let $G = (V, E, w)$ be an undirected weighted graph (with non-negative weights). One can consider two natural metrics
-    associated with $G$: let $d(v_1, v_2)$ be the distance between $v_1 \in V$ and $v_2 \in V$ with respect to $w$,
-    and $\dunw(v_1, v_2)$~--- the distance between $v_1$ and $v_w$ with respect to unit weights.
+    Let $G$ be a weighted undirected graph with unique shortest paths.
+    In~\cite{ADFGW11} the following observation is heavily used: the set of all shortest paths of $G$ (by shortest path we mean its set of vertices)
+    has VC-dimension~\cite{VC71} at most two.
+    We give two new applications of this fact.
 
-    Let us pose the following problem.
-    \begin{problem}
-        Given an undirected weighted graph $G = (V, E, w)$ and $0 < \eps < 1$ let $U \subseteq V$ be \emph{an $\eps$-cover}
-        of $G$ if for every $v_1, v_2 \in V$ such that $\dunw(v_1, v_2) \geq \eps n$ there exists $u \in U$
-        such that $d(v_1, v_2) = d(v_1, u) + d(u, v_2)$.
-
-        What is the smallest $\eps$-cover for a given graph $G$?
-    \end{problem}
-
-    In this paper we partially solve it and give two applications that use the existence of small $\eps$-covers.
-
-    In Section~\ref{section_general_graphs} we prove two bounds. In Section~\ref{subsection_upper_bound}
-    we prove that for every graph $G$ and $0 < \eps < 1$ there exists an $\eps$-cover of size $O(\log(1 / \eps) / \eps)$.
-    It is an immediate consequence of the $\eps$-net theorem for set systems with bounded VC-dimension~\cite{HW86}
-    and the fact that a system of shortest paths (provided that they are unique) has VC-dimension
-    that is at most two~\cite{ADFGW11}.
-    In Section~\ref{subsection_lower_bound} we prove that one can not improve the abovementioned bound
-    to $O(1 / \eps)$ by a simple reduction to a deep theorem in additive combinatorics: density Hales--Jewett
-    theorem~\cite{P09}. This technique is similar to that of Alon~\cite{A10}.
-
-    \section{General graphs}
-    \label{section_general_graphs}
-    \subsection{Upper bound}
-    \subsection{Lower bound}
-    \section{Bounded treewidth graphs}
-    \section{Applications}
     \subsection{Distance oracles}
+
+    The first application is about distance oracles.
+    Let $G = (V, E)$ be an undirected unweighted graph with $n$ vertices.
+    For vertices $v_1, v_2 \in V$ let $d(v_1, v_2)$ be the distance between $v_1$ and $v_2$.
+    Let $\eps, \delta$ be two fixed positive constants.
+    We build a data structure of size $O(n^{1 + \delta})$ that given two vertices $v_1, v_2 \in V$ in constant time reports the following:
+    \begin{itemize}
+        \item If $d(v_1, v_2) < \eps n$, then the data structure reports ``$\perp$'';
+        \item If $d(v_1, v_2) \geq \eps n$, then the data structure reports $d(v_1, v_2)$ exactly.
+    \end{itemize}
+
     \subsection{Metric embeddings}
+
+    The second application is about metric embeddings.
+    Let $G = (V, E, w)$ be an undirected weighted graph with $n$ vertices.
+    For vertices $v_1, v_2 \in V$ let $d(v_1, v_2)$ be the distance between $v_1$ and $v_2$ with respect to $w$,
+    and $\dunw(v_1, v_2)$ be the distance with respect to unit weights.
+
+    Suppose we want to approximate metric $d$ with $\ell_1$-norm. We are looking for mappings from $V$ to $\ell_1$ with small distortion. 
+    \begin{definition}
+        Let us say that a mapping $f \colon V \to (\mathbb{R}^k, \ell_1)$ has distortion $D$ if for every $v_1, v_2 \in V$
+        $$
+            \frac{d(v_1, v_2)}{D} \leq \|f(v_1) - f(v_2)\|_1 \leq d(v_1, v_2).
+        $$
+    \end{definition}
+
+    There are many results about $\ell_1$-embeddability. Let us state several of them.
+
+    \begin{definition}
+        Doubling dimension of $d$ is the minimum integer $k$ such that every subset $V' \subseteq V$ of diameter $\Delta$
+        can be covered with $2^k$ subsets of diameter $\Delta / 2$.
+    \end{definition}
+
+    \begin{definition}
+        Let us say that $d$ is of negative type if $\sqrt{d}$ is isometrically embeddable into $\ell_2$.
+    \end{definition}
+
+    \begin{theorem}
+        There are the following upper-bounds on $D$:
+        \begin{itemize}
+            \item \cite{B85} For any $d$ one can take $D = O(\log n)$;
+            \item \cite{R99, IS07} If $G$ is of fixed genus, then $D = O(\sqrt{\log n})$. 
+            \item \cite{GKL03} If $d$ has bounded doubling dimension, then $D = O(\sqrt{\log n})$.
+            \item \cite{ALN05} If $d$ is of negative type, then $D = O(\sqrt{\log n} \log \log n)$. 
+        \end{itemize}
+    \end{theorem}
+
+    But what if we are interested in preserving $d(v_1, v_2)$ only if $\dunw(v_1, v_2) \geq \eps n$?
+    In Section~\ref{} we state and prove a generic black box reduction that allows us to replace in Theorem~\ref{} all occurences of $n$ with $1 / \eps$ in this
+    case.
+    \section{VC-dimension and $\eps$-nets}
+
+    \section{Distance oracles}
+
+    \section{Metric embeddings}
+
     \bibliographystyle{alpha}
     \bibliography{../bibtex/ir}
 \end{document}
