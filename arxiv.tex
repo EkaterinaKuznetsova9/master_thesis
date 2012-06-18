@@ -31,7 +31,8 @@
     Let $G = (V, E)$ be an undirected unweighted graph with $n$ vertices.
     For vertices $v_1, v_2 \in V$ let $d(v_1, v_2)$ be the distance between $v_1$ and $v_2$.
     Let $\eps, \delta$ be two fixed positive constants.
-    We build a data structure of size $O(n^{1 + \delta})$ that given two vertices $v_1, v_2 \in V$ in constant time reports the following:
+    In Section~\ref{data_structure}
+    we build a data structure of size $O(n^{1 + \delta})$ that given two vertices $v_1, v_2 \in V$ in constant time reports the following:
     \begin{itemize}
         \item If $d(v_1, v_2) < \eps n$, then the data structure reports ``$\perp$'';
         \item If $d(v_1, v_2) \geq \eps n$, then the data structure reports $d(v_1, v_2)$ exactly.
@@ -64,6 +65,7 @@
     \end{definition}
 
     \begin{theorem}
+        \label{l1_embeddings}
         There are the following upper-bounds on $D$:
         \begin{itemize}
             \item \cite{B85} For any $d$ one can take $D = O(\log n)$;
@@ -74,13 +76,18 @@
     \end{theorem}
 
     But what if we are interested in preserving $d(v_1, v_2)$ only if $\dunw(v_1, v_2) \geq \eps n$?
-    In Section~\ref{} we state and prove a generic black box reduction that allows us to replace in Theorem~\ref{} all occurences of $n$ with $1 / \eps$ in this
-    case.
+    In Section~\ref{metric_embeddings} we state and prove a generic black box transformation
+    that allows us to replace all occurences of $n$ in Theorem~\ref{l1_embeddings} with $1 / \eps$ for this case.
+
+    In~\cite{ABCDGKNS05} somewhat stronger result about arbitrary and bounded doubling dimension metrics is proved, but since our transformation
+    is black box, it automatically holds for fixed genus and negative type metrics.
     \section{VC-dimension and $\eps$-nets}
 
     \section{Distance oracles}
+    \label{data_structure}
 
     \section{Metric embeddings}
+    \label{metric_embeddings}
 
     \bibliographystyle{alpha}
     \bibliography{../bibtex/ir}
