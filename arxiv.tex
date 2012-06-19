@@ -18,14 +18,15 @@
 \newtheorem{corollary}{Corollary}
 
 \title{On $\eps$-Nets, Distance Oracles, \\ and Metric Embeddings}
-\author{Ilya Razenshteyn}
+\author{Ilya Razenshteyn \footnote{Mathematics Department, Moscow State University, e-mail: \texttt{ilyaraz@gmail.com}}}
 \date{}
 
 \begin{document}
     \maketitle
     \begin{abstract}
         We give two new applications of an observation from~\cite{ADFGW11}.
-        The first is an almost linear sized constant time data structure for reporting large distances in undirected graphs.
+        The first is an almost linear sized constant time data structure for reporting very
+        large distances in undirected graphs.
         The second is a generic transformation of results about $\ell_1$-embeddability of metrics to a setting,
         where we are interested in preservation of large distances only.
     \end{abstract}
@@ -45,8 +46,8 @@
     In Section~\ref{data_structure}
     we build a data structure of size $O(n^{1 + \delta})$ that given two vertices $v_1, v_2 \in V$ in constant time reports the following:
     \begin{itemize}
-        \item If $d(v_1, v_2) < \eps n$, then the data structure reports ``$\perp$'';
-        \item If $d(v_1, v_2) \geq \eps n$, then the data structure reports $d(v_1, v_2)$ exactly.
+        \item ``$\perp$'', if $d(v_1, v_2) < \eps n$;
+        \item $d(v_1, v_2)$, if $d(v_1, v_2) \geq \eps n$.
     \end{itemize}
 
     \subsection{Metric embeddings}
@@ -64,7 +65,7 @@
         $$
     \end{definition}
 
-    There are many results about $\ell_1$-embeddability. Let us state several of them.
+    There are many results about $\ell_1$-embeddability. Let us state some of them.
 
     \begin{definition}
         Doubling dimension of $d$ is the minimum integer $k$ such that every subset $V' \subseteq V$ of diameter $\Delta$
@@ -80,8 +81,8 @@
         There are the following upper-bounds on $D$:
         \begin{itemize}
             \item \cite{B85} For any $d$ one can take $D = O(\log n)$;
-            \item \cite{R99} If $G$ is $H$-minor free, then $D = O(\sqrt{\log n})$. 
-            \item \cite{GKL03} If $d$ has bounded doubling dimension, then $D = O(\sqrt{\log n})$.
+            \item \cite{R99} If $G$ is $H$-minor free, then $D = O(\sqrt{\log n})$; 
+            \item \cite{GKL03} If $d$ has bounded doubling dimension, then $D = O(\sqrt{\log n})$;
             \item \cite{ALN05} If $d$ is of negative type, then $D = O(\sqrt{\log n} \log \log n)$. 
         \end{itemize}
     \end{theorem}
@@ -150,6 +151,8 @@
         and $d = 2$ (by Theorem~\ref{vc_shortest}).
     \end{proof}
 
+    It follows from~\cite{A10} that one can not improve the bound on the size of $U$ to $O(1 / \eps)$, but if $G$ is $H$-minor
+    free, then it follows from~\cite{KPR93} that there exists a desired $U$ of size $O(1 / \eps)$.
     \section{Distance oracles}
     \label{data_structure}
 
@@ -264,8 +267,8 @@
         There are the following upper-bounds on $\eps$-distortion $D$:
         \begin{itemize}
             \item For any $d$ one can take $D = O(\log (1 / \eps))$;
-            \item If $G$ is $H$-minor free, then $D = O(\sqrt{\log (1 / \eps)})$. 
-            \item If $d$ has bounded doubling dimension, then $D = O(\sqrt{\log (1 / \eps)})$.
+            \item If $G$ is $H$-minor free, then $D = O(\sqrt{\log (1 / \eps)})$; 
+            \item If $d$ has bounded doubling dimension, then $D = O(\sqrt{\log (1 / \eps)})$;
             \item If $d$ is of negative type, then $D = O(\sqrt{\log (1 / \eps)} \log \log (1 / \eps))$. 
         \end{itemize}
     \end{corollary}
